@@ -5,9 +5,9 @@ import { FaGithub } from "react-icons/fa";
 const Main = () => {
   return (
     <div className="w-full h-[100vh] text-center">
-      <div className="xl:max-w-screen-xl md:max-w-screen-md sm:max-w-screen-sm p-4 w-full h-full mx-auto flex justify-center items-center">
+      <div className="xl:max-w-screen-xl md:max-w-screen-md sm:max-w-screen-sm px-8 w-full h-full mx-auto flex justify-center items-center">
         <div>
-          <p className="mx-auto max-w-[380px] -mb-6 uppercase text-[63px] font-extrabold tracking-widest text-[#bfdcb2]">
+          <p className="mx-auto max-w-[380px] -mb-[26px] uppercase text-[63px] font-extrabold tracking-widest text-[#bfdcb2]">
             WELCOME
           </p>
           <h1 className=" mx-auto max-w-[345px] text-5xl text-gray-700 bg-[#bfdcb2] p-2">

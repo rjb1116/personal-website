@@ -1,55 +1,129 @@
 import React from "react";
 import { useState } from "react";
+import { DateTime, Duration } from "luxon";
 
-const SolarInputs = ({ setLatLon, setDateTime }) => {
+var tzlookup = require("tz-lookup");
+
+const SolarInputs = ({ latLon, setLatLon, dateTime, setDateTime }) => {
+  const getDecimalHour = (dateTime) => {
+    return dateTime.diff(dateTime.startOf("day")).as("hours").toFixed(2);
+  };
+
+  const [inputTime, setInputTime] = useState(getDecimalHour(dateTime));
+
   const [inputLatLon, setInputLatLon] = useState(
-    "47.65120009191971, -122.3470160056653"
+    `${latLon.latitude}, ${latLon.longitude}`
   );
-  const [validInputLatLon, setValidInputLatLon] = useState("default");
 
-  const [inputDateTime, setInputDateTime] = useState("");
+  const [inputDate, setInputDate] = useState(dateTime.toISODate());
+
+  const handleInputChangeTime = (event) => {
+    setInputTime(event.target.value);
+
+    setDateTime(
+      dateTime
+        .startOf("day")
+        .plus(Duration.fromObject({ hours: Number(event.target.value) }))
+    );
+  };
+
+  const handleInputChangeDate = (event) => {
+    setInputDate(event.target.value);
+
+    setDateTime(
+      DateTime.fromObject(
+        {
+          year: DateTime.fromISO(event.target.value).year,
+          month: DateTime.fromISO(event.target.value).month,
+          day: DateTime.fromISO(event.target.value).day,
+          hour: dateTime.hour,
+          minute: dateTime.minute,
+        },
+        {
+          zone: dateTime.zone,
+        }
+      )
+    );
+  };
+
+  const regexLatLon =
+    /^[(]?[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)[)]?$/;
+
+  const [validInputLatLon, setValidInputLatLon] = useState("default");
 
   const handleInputChangeLatLon = (event) => {
     setInputLatLon(event.target.value);
-    checkInputValidLatLon(event.target.value)
-      ? setValidInputLatLon("valid")
-      : setValidInputLatLon("invalid");
-  };
 
-  const checkInputValidLatLon = (inputValue) => {
-    const validLatLon = new RegExp(
-      /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/
-    );
-    if (validLatLon.test(inputValue)) {
-      return true;
+    if (event.target.value.match(regexLatLon) != null) {
+      setValidInputLatLon("valid");
+
+      const latitude = parseFloat(
+        event.target.value.split(",")[0].replace("(", "")
+      );
+      const longitude = parseFloat(
+        event.target.value.split(",")[1].replace(")", "")
+      );
+      setLatLon({
+        latitude: latitude,
+        longitude: longitude,
+      });
+
+      const timezone = tzlookup(latitude, longitude);
+      setDateTime(dateTime.setZone(timezone, { keepLocalTime: true }));
     } else {
-      return false;
+      setValidInputLatLon("invalid");
     }
-  };
-
-  const handleInputChangeDateTime = (event) => {
-    setInputDateTime(event.target.value);
-  };
-
-  const handleClick = () => {
-    const latitude = parseFloat(inputLatLon.split(",")[0]);
-    const longitude = parseFloat(inputLatLon.split(",")[1]);
-
-    setLatLon({
-      latitude: latitude,
-      longitude: longitude,
-    });
-
-    setDateTime(inputDateTime);
   };
 
   return (
     <div className="w-full h-auto text-center">
-      <div className="pt-20 xl:max-w-screen-xl md:max-w-screen-md sm:max-w-screen-sm w-full h-full mx-auto flex-col">
-        <div className="w-[300px] mx-auto p-4 flex-col">
-          <p className=" font-mono text-sm pb-2">
-            Input Latitude and Longitude
+      <div className=" xl:max-w-screen-xl md:max-w-screen-md sm:max-w-screen-sm w-full h-full mx-auto flex-col">
+        <div className="w-[350px] mx-auto p-4 flex-col">
+          <p className=" font-mono">
+            {DateTime.fromObject({
+              year: 2000,
+              month: 1,
+              day: 1,
+              hour: 1,
+              minute: 1,
+            })
+              .startOf("day")
+              .plus({ hours: Number(inputTime) })
+              .toLocaleString(DateTime.TIME_SIMPLE)}
           </p>
+          <div className="pt-2 pb-2">
+            <input
+              type="range"
+              id="hour"
+              name="hour"
+              min="0"
+              max="24"
+              step="any"
+              list="markers"
+              className="w-full accent-[#3a8844]"
+              value={inputTime}
+              onChange={handleInputChangeTime}
+            />
+            <datalist id="markers">
+              {Array(25)
+                .fill()
+                .map((_, i) => (
+                  <option key={i.toString()} value={i.toString()}></option>
+                ))}
+            </datalist>
+          </div>
+          <p className=" font-mono text-sm pt-2">Input Date</p>
+          <div className="pt-1 pb-4 w-full">
+            <input
+              type="date"
+              id="inputDate"
+              name="inputDate"
+              value={inputDate}
+              onChange={handleInputChangeDate}
+              className=" w-full py-2 text-xs text-center border-2 border-[#3a8844] rounded-md"
+            />
+          </div>
+          <p className=" font-mono text-sm">Input Latitude and Longitude</p>
           <p className=" text-xs italic text-gray-400">
             Recommend copying from
             <a href="https://maps.google.com"> Google Maps </a>
@@ -57,12 +131,12 @@ const SolarInputs = ({ setLatLon, setDateTime }) => {
           <p className=" text-xs italic text-gray-400">
             (Desktop: Right-click | Mobile: Long-press)
           </p>
-          <div className="pt-4">
+          <div className="pt-2">
             <input
               type="text"
               id="inputLatLon"
               name="inputLatLon"
-              value={inputLatLon}
+              placeholder={inputLatLon}
               onChange={handleInputChangeLatLon}
               className={
                 validInputLatLon == "default"
@@ -78,29 +152,13 @@ const SolarInputs = ({ setLatLon, setDateTime }) => {
                 : "pt-1 pb-2 text-xs italic text-[#ecf0f3]"
             }
           >
-            Invalid input, must be [-90:90], [-180:180]
+            Invalid input, must be of form [-90:90], [-180:180]
           </p>
-          <p className=" font-mono text-sm pt-2">Input Date and Time</p>
-          <div className="pt-2 pb-8">
-            <input
-              type="datetime-local"
-              id="inputDateTime"
-              name="inputDateTime"
-              onChange={handleInputChangeDateTime}
-              className=" w-full py-2 text-xs text-center border-2 border-[#3a8844] rounded-md"
-            />
+          <div className=" text-sm py-4 italic text-gray-700">
+            <a href="https://github.com/rjb1116/sun_coordinates">
+              Walk through the math with me on my github!
+            </a>
           </div>
-          <button
-            disabled={validInputLatLon == "invalid" || inputDateTime == ""}
-            className={
-              validInputLatLon == "invalid" || inputDateTime == ""
-                ? "p-2 rounded-xl bg-[#3a8844] text-[#ecf0f3] opacity-30 cursor-default"
-                : "p-2 rounded-xl bg-[#3a8844] text-[#ecf0f3]"
-            }
-            onClick={handleClick}
-          >
-            Compute
-          </button>
         </div>
       </div>
     </div>

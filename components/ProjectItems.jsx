@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const ProjectItems = ({ title, description, backgroundImage, projectUrl }) => {
   return (
-    <div className="relative flex-col h-[300px] w-[350px] mx-auto rounded-xl">
+    <div className="relative flex-col h-[250px] w-[300px] mx-auto rounded-xl">
       <Image
         className="rounded-xl object-cover border-2 border-[#3a8844]"
         src={backgroundImage}

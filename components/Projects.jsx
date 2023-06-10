@@ -7,7 +7,7 @@ import { HiOutlineChevronDoubleUp } from "react-icons/hi";
 const Projects = ({ repos }) => {
   return (
     <div id="projects" className="w-full">
-      <div className="xl:max-w-screen-xl md:max-w-screen-md sm:max-w-screen-sm mx-auto p-4 py-20">
+      <div className="xl:max-w-screen-xl md:max-w-screen-md sm:max-w-screen-sm mx-auto px-8 py-20">
         <p className="text-xl tracking-widest font-mono lowercase text-[#3a8844]">
           Projects
         </p>
