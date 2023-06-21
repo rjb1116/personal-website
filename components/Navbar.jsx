@@ -7,7 +7,7 @@ import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 
 const Navbar = () => {
   const navbarLinks = [
-    ["resumé", "/"],
+    ["resumé", "/resume/"],
     ["projects", "/#projects"],
     ["solar tracker app", "/solartracker/"],
   ];

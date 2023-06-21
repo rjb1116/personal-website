@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import ProjectItems from "./ProjectItems";
-import propertyImg from "../public/assets/projects/property.jpg";
 import { HiOutlineChevronDoubleUp } from "react-icons/hi";
 
 const Projects = ({ repos }) => {

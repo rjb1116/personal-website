@@ -14,20 +14,47 @@ const Main = () => {
             Hi, I'm <span className=" text-[#3a8844]">Reuben</span>
           </h1>
           <p className=" pt-16 text-gray-700 m-auto">
-            <span className=" uppercase text-3xl font-bold">By day, </span>I'm a
-            <span className="font-bold"> Machine Learning Engineer</span>.
+            <span className=" uppercase text-3xl font-bold">By day, </span>
+            I'm a<span className="font-bold"> Machine Learning Engineer </span>
+            who loves to unlock the potential of data scientists. I do the
+            <a
+              href="https://proceedings.neurips.cc/paper_files/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pdf"
+              className="italic text-[#3a8844]"
+            >
+              {" "}
+              other 90%{" "}
+            </a>
+            needed to deploy real-world machine learning and AI systems.
             Checkout my
-            <a href="/resume"> resumé </a>
+            <a href="/resume/" className="italic text-[#3a8844]">
+              {" "}
+              resumé{" "}
+            </a>
             and
-            <a href="https://www.linkedin.com/in/reuben-britto/"> LinkedIn </a>
+            <a
+              href="https://www.linkedin.com/in/reuben-britto/"
+              className="italic text-[#3a8844]"
+            >
+              {" "}
+              LinkedIn{" "}
+            </a>
             to learn more about my career and experience.
           </p>
           <p className=" py-4 text-gray-700 m-auto">
             <span className=" uppercase text-3xl font-bold">By night, </span>I
             enjoy building anything and everything. Check out the
-            <a href="/#projects"> projects section </a>
+            <a href="/#projects" className="italic text-[#3a8844]">
+              {" "}
+              projects section{" "}
+            </a>
             or peruse my
-            <a href="https://github.com/rjb1116"> github </a>
+            <a
+              href="https://github.com/rjb1116"
+              className="italic text-[#3a8844]"
+            >
+              {" "}
+              github{" "}
+            </a>
             to learn more. Don't hesitate to reach out if you wanna chat about
             anything.
           </p>
