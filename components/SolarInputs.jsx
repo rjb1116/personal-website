@@ -155,6 +155,11 @@ const SolarInputs = ({ latLon, setLatLon, dateTime, setDateTime }) => {
             Invalid input, must be of form [-90:90], [-180:180]
           </p>
           <div className=" text-sm py-4 italic text-gray-700">
+            <a href="https://gml.noaa.gov/grad/solcalc/">
+              Verify my values on NOAAs website!
+            </a>
+          </div>
+          <div className=" text-sm py-4 italic text-gray-700">
             <a href="https://github.com/rjb1116/sun_coordinates">
               Walk through the math with me on my github!
             </a>
